@@ -1,16 +1,16 @@
 import expect from 'expect';
 
-import {ACTION_NAMES_CHANGE, ACTION_SELECTED_ADD} from '../assets/javascripts/constants';
-import {namesReducer, selectedReducer} from '../assets/javascripts/reducers';
+import {ACTION_ATTENDEES_CHANGE, ACTION_SELECTED_ADD} from '../assets/javascripts/constants';
+import {attendeeListReducer, selectedReducer} from '../assets/javascripts/reducers';
 
 describe('Test Reducers', () => {
 
 
-    describe('Name reducer', () => {
+    describe('Attendee List reducer', () => {
 
         it('should return an empty array by default', () => {
 
-            const state = namesReducer();
+            const state = attendeeListReducer();
 
             expect(state).toBeA(Array);
             expect(state.length).toBe(0);
@@ -21,7 +21,7 @@ describe('Test Reducers', () => {
 
             const prevState = ['Jane'];
 
-            const state = namesReducer(prevState, {type: ACTION_NAMES_CHANGE, names: ['John']});
+            const state = attendeeListReducer(prevState, {type: ACTION_ATTENDEES_CHANGE, attendeeList: ['John']});
 
             expect(state.length).toBe(1);
             expect(state[0]).toBe('John');
@@ -29,7 +29,6 @@ describe('Test Reducers', () => {
         });
 
     });
-
 
     describe('Selected reducer', () => {
 

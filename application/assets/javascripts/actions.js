@@ -6,12 +6,12 @@
  * @module actions
  */
 
-import {ACTION_NAMES_CHANGE, ACTION_SELECTED_ADD} from './constants';
+import {ACTION_ATTENDEES_CHANGE, ACTION_SELECTED_ADD} from './constants';
 
-export function namesChangeAction(names = []) {
+export function attendeeListChangeAction(attendeeList = []) {
     return {
-        type: ACTION_NAMES_CHANGE,
-        names
+        type: ACTION_ATTENDEES_CHANGE,
+        attendeeList
     };
 }
 

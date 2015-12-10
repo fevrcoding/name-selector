@@ -1,18 +1,18 @@
 import expect from 'expect';
 
-import {ACTION_NAMES_CHANGE, ACTION_SELECTED_ADD} from '../assets/javascripts/constants';
-import {namesChangeAction, selectedAddAction} from '../assets/javascripts/actions';
+import {ACTION_ATTENDEES_CHANGE, ACTION_SELECTED_ADD} from '../assets/javascripts/constants';
+import {attendeeListChangeAction, selectedAddAction} from '../assets/javascripts/actions';
 
 describe('Test Actions', () => {
 
 
     describe('Action name action', () => {
 
-        const names = ['John'];
+        const attendeeList = ['John'];
         let action;
 
         beforeEach(() => {
-            action = namesChangeAction(names);
+            action = attendeeListChangeAction(attendeeList);
         });
 
         it('should return an object', () => {
@@ -20,17 +20,17 @@ describe('Test Actions', () => {
         });
 
         it('should match the change action action type', () => {
-            expect(action.type).toBe(ACTION_NAMES_CHANGE);
+            expect(action.type).toBe(ACTION_ATTENDEES_CHANGE);
         });
 
         it('should pass new names', () => {
-            expect(action.names).toEqual(names);
+            expect(action.attendeeList).toEqual(attendeeList);
         });
 
         it('should return an empty array by default', () => {
-            let defaultAction = namesChangeAction();
-            expect(defaultAction.names).toBeA(Array);
-            expect(defaultAction.names.length).toBe(0);
+            let defaultAction = attendeeListChangeAction();
+            expect(defaultAction.attendeeList).toBeA(Array);
+            expect(defaultAction.attendeeList.length).toBe(0);
         });
 
     });

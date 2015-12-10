@@ -28,9 +28,11 @@ module.exports = function (gulp, $, options) {
         }
 
         mocha.addFile(require.resolve('babel-polyfill'));
+        mocha.addFile(srcTestPath + '/setup.js');
 
         webpackConf = {
             debug: false,
+            devtool: false,
             context: srcTestPath,
             entry: {},
             output: {
@@ -71,7 +73,6 @@ module.exports = function (gulp, $, options) {
             }
             // Run the tests.
             runner = mocha.run(function (mochaErr) {
-                console.log(options.isWatching);
                 if (!options.isWatching) {
                     if (mochaErr) {
                         done(true);

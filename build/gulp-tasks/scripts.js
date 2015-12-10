@@ -16,33 +16,6 @@ function compilerTask(gulp, $, options) {
         var callingDone = false,
             config = _.defaults(opts || {}, webpackConfig);
 
-
-        if (options.isWatching) {
-            config.watch = true;
-        }
-
-        if (!options.production) {
-            if (config.debug === undefined) {
-                config.devtool = '#source-map';
-                config.debug = true;
-            }
-        } else {
-            config.plugins.push(
-                new webpack.optimize.DedupePlugin(),
-                new webpack.optimize.UglifyJsPlugin({
-                    sourceMap: false,
-                    compressor: {
-                        screw_ie8: true,
-                        warnings: false
-                    }
-                }),
-                new webpack.BannerPlugin(
-                    _.template(options.banners.application)(options),
-                    {entryOnly: true, raw: true}
-                )
-            );
-        }
-
         webpack(config, function (err, stats) {
 
             if (callingDone) {
@@ -80,7 +53,12 @@ function compilerTask(gulp, $, options) {
                 if (stats && stats.hasErrors()) {
                     callback(true);
                 } else {
-                    callback();
+                    var assets = stats.toJson().assets.filter(function (asset) {
+                        return asset.emitted === true;
+                    }).map(function (asset) {
+                        return asset.name;
+                    });
+                    callback(null, assets);
                 }
             }
         });
@@ -109,7 +87,7 @@ module.exports = function (gulp, $, options) {
             options.isWatching = true;
         }
 
-        webpackCompiler(function (err) {
+        webpackCompiler(function (err/*, assets*/) {
             if (err) {
                 notifier.emit('error', new Error('Compilation error!'));
             } else {
@@ -117,6 +95,8 @@ module.exports = function (gulp, $, options) {
                 browserSync.reload();
             }
 
+        }, {
+            watch: true
         });
     });
 };

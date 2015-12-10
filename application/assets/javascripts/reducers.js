@@ -7,13 +7,13 @@
  */
 
 import { combineReducers } from 'redux';
-import {ACTION_NAMES_CHANGE, ACTION_SELECTED_ADD} from './constants';
+import {ACTION_ATTENDEES_CHANGE, ACTION_SELECTED_ADD} from './constants';
 
-export function namesReducer(state = [], action = {}) {
+export function attendeeListReducer(state = [], action = {}) {
 
     switch (action.type) {
-    case ACTION_NAMES_CHANGE:
-        return [...action.names];
+    case ACTION_ATTENDEES_CHANGE:
+        return [...action.attendeeList];
     default:
         return state;
     }
@@ -32,7 +32,7 @@ export function selectedReducer(state = [], action = {}) {
 
 
 export default combineReducers({
-    names: namesReducer,
+    attendeeList: attendeeListReducer,
     selected: selectedReducer
 });
 
