@@ -26,37 +26,36 @@ function mapDispatchToProps(dispatch) {
 
 export class EditForm extends Component {
 
-    handleSubmit(e) {
-        e.preventDefault();
-        const value = (this.refs.attendeeInput.value || '').trim();
-        const attendees = EditForm.filterAttendees(value)
+    static parseAttendees(value = '') {
+        return value.split("\n")
+            .map((line) => line.replace(/[\s]+/g, ' ').trim())
+            .filter((line) => !!line.length)
             .map((name, id) => {
                 return {id, name};
             });
+    }
 
+    handleSubmit(e) {
+        e.preventDefault();
+        const value = (this.refs.attendeeInput.value || '').trim();
+        const attendees = EditForm.parseAttendees(value);
         this.props.updateAttendees(attendees);
 
     }
 
-    static filterAttendees(value = '') {
-        return value.split("\n")
-            .map((line) => line.replace(/[\s]+/g, ' ').trim())
-            .filter((line) => !!line.length);
-    }
-
-    getAttendees() {
+    attendeesToString() {
         return this.props.attendees.map((attendee) => attendee.name).join("\n").trim();
     }
 
     render() {
 
-        let attendees = this.getAttendees();
+        let attendees = this.attendeesToString();
 
         return (
             <form action="" onSubmit={this.handleSubmit.bind(this)}>
                 <textarea cols="30" ref="attendeeInput" id="edit-form" name="edit-form" rows="10" defaultValue={attendees} />
                 <p>
-                    <button type="submit">{'Save'}</button>
+                    <button type="submit" ref="submitBtn">{'Save'}</button>
                     <button type="reset">{'Reset'}</button>
                 </p>
             </form>

@@ -1,4 +1,4 @@
-import expect, { createSpy } from 'expect'
+import expect, { createSpy, spyOn } from 'expect'
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 
@@ -6,7 +6,7 @@ import {EditForm} from '../../assets/javascripts/components/edit-form';
 
 describe('Edit Form Component Actions', () => {
 
-    let editFormInstance, textarea, button;
+    let editFormInstance, textarea;
     const props = {
         attendees: [{
             id: 0,
@@ -21,43 +21,77 @@ describe('Edit Form Component Actions', () => {
     beforeEach(() => {
         editFormInstance = TestUtils.renderIntoDocument(<EditForm {...props} />);
         textarea = TestUtils.scryRenderedDOMComponentsWithTag(editFormInstance, 'textarea');
-        ///button = TestUtils.findRenderedDOMComponentWithTag(editFormInstance, 'button');
     });
 
 
+    describe('EditForm.parseAttendees()', () => {
 
-    describe('Instance Methods', () => {
+        it('should clean up empty lines and exceeeding whitespaces and return an array of names', () => {
+            const expected = [{
+                id: 0,
+                name: 'John'
+            }, {
+                id: 1,
+                name: 'Jane Doe'
+            }];
+            const input = "John\n    \nJane Doe\n\n";
+            expect(EditForm.parseAttendees(input)).toEqual(expected);
+        });
+    });
+
+    describe('.attendeesToString()', () => {
 
         it('should return a multi-line string of names', () => {
             const expected = "John\nJane";
-            expect(editFormInstance.getAttendees()).toBe(expected);
+            expect(editFormInstance.attendeesToString()).toBe(expected);
         });
 
-        //it('should clean up empty lines and exceeeding whitespaces', () => {
-        //    const expected = "John\nJane Doe";
-        //    let newProps = Object.assign({}, props);
-        //    newProps.attendees = [
-        //        {
-        //            id: 0,
-        //            name: 'John'
-        //        },
-        //        {
-        //            id: 1,
-        //            name: '   '
-        //        },
-        //        {
-        //            id: 2,
-        //            name: 'Jane Doe'
-        //        }
-        //    ];
-        //    editFormInstance = TestUtils.renderIntoDocument(<EditForm {...newProps} />);
-        //    expect(editFormInstance.getAttendees()).toBe(expected);
-        //});
-        it('should clean up empty lines and exceeeding whitespaces', () => {
-            const expected = ['John', 'Jane Doe'];
-            const input = "John\n    \nJane Doe\n\n";
-            expect(EditForm.filterAttendees(input)).toEqual(expected);
+    });
+
+    describe('.handleSubmit()', () => {
+
+        let submitEvent;
+
+        beforeEach(() => {
+
+            submitEvent = {
+                preventDefault: createSpy()
+            };
+
         });
+
+        it('should prevent default submit event', () => {
+            editFormInstance.handleSubmit(submitEvent);
+            expect(submitEvent.preventDefault).toHaveBeenCalled();
+        });
+
+        it('should parse textarea input and call passed in update callback', () => {
+            let testStr = "John Doe\nJane Doe";
+            const expected = EditForm.parseAttendees(testStr);
+
+            editFormInstance.refs.attendeeInput.value = testStr;
+            editFormInstance.handleSubmit(submitEvent);
+
+            expect(props.updateAttendees).toHaveBeenCalledWith(expected);
+        });
+
+    });
+
+    describe('.render()',() => {
+
+        it('should call handleSubmit when submit btn is clicked', () => {
+
+            const btn = editFormInstance.refs.submitBtn;
+
+            spyOn(editFormInstance, 'handleSubmit');
+
+            TestUtils.Simulate.click(btn);
+
+            expect(props.updateAttendees).toHaveBeenCalledWith(expected);
+
+
+        });
+
     });
 
     //it('should render a list of names into the textarea', () => {

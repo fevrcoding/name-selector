@@ -98,36 +98,6 @@ module.exports = function (gulp, $, options) {
                 return $.if(vendorRegexp, $.header(options.banners.vendors, {pkg: options.pkg}));
             });
 
-        //userRefPipe = lazypipe()
-        //    .pipe(function () {
-        //        return assets;
-        //    })
-        //    .pipe(function () {
-        //        return styleFilter;
-        //    })
-        //    .pipe(function () {
-        //        return $.if(/\-ie\.min\.css$/, $.minifyCss({compatibility: 'ie8'}), $.minifyCss());
-        //    })
-        //    .pipe(function () {
-        //        return styleFilter.restore;
-        //    })
-        //
-        //    .pipe(function () {
-        //        return jsFilter;
-        //    })
-        //    .pipe($.uglify, {preserveComments: 'license'})
-        //    .pipe($.header, options.banners.application, {pkg: options.pkg})
-        //    .pipe(function () {
-        //        return jsFilter.restore;
-        //    })
-        //    .pipe(function () {
-        //        var vendorRegexp = new RegExp(paths.vendors);
-        //        return $.if(vendorRegexp, $.header(options.banners.vendors, {pkg: options.pkg}));
-        //    })
-        //    .pipe($.rev)
-        //    .pipe(assets.restore)
-        //    .pipe($.useref,
-        //    });
     } else {
         userRefPipe = $.util.noop;
     }

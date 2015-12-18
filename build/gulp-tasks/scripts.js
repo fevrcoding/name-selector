@@ -67,15 +67,16 @@ function compilerTask(gulp, $, options) {
 
 module.exports = function (gulp, $, options) {
 
-    var webpackCompiler = compilerTask(gulp, $, options);
-
     gulp.task('scripts', function (done) {
+        //lazy init
+        var webpackCompiler = compilerTask(gulp, $, options);
         webpackCompiler(done);
     });
 
     gulp.task('scripts:watch', function (done) {
 
         var notifier = $.notify({message: 'Scripts Compiled'}),
+            webpackCompiler = compilerTask(gulp, $, options),
             browserSync = require('browser-sync').get(options.buildHash);
 
         notifier.on('error', $.notify.onError({

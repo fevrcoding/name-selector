@@ -8,8 +8,7 @@ module.exports = function (gulp, $, options) {
 
     var _ = require('lodash'),
         del = require('del'),
-        path = require('path'),
-        browserSync = require('browser-sync').create(options.buildHash);
+        path = require('path');
 
     var paths = options.paths,
         assetsPath = options.assetsPath,
@@ -58,7 +57,6 @@ module.exports = function (gulp, $, options) {
     };
 
     if (!options.livereload) {
-        serverConfigDefault.ghostMode = false;
         serverConfigDefault.ui = false;
         serverConfigDefault.snippetOptions.rule.fn = function (snippet, match) {
             return match;
@@ -74,6 +72,8 @@ module.exports = function (gulp, $, options) {
 
     // Watch Files For Changes & Reload
     gulp.task('serve', ['default'], function (done) {
+
+        var browserSync = require('browser-sync').create(options.buildHash);
 
         var serverConf = _.defaults({
             ui: {
@@ -122,6 +122,8 @@ module.exports = function (gulp, $, options) {
 
     //just a static server
     gulp.task('server', function (done) {
+
+        var browserSync = require('browser-sync').create(options.buildHash);
 
         var serverConf = _.defaults({
             logLevel: 'silent',
