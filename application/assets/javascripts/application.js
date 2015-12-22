@@ -16,11 +16,15 @@ import {Provider} from 'react-redux';
 //redux stuff
 import reducers from './reducers';
 
+//middlewares
+import multi from './multi.middleware';
+
 //container Components
 import AttendeeListContainer from './components/attendee-list';
+import SelectedListContainer from './components/selected-list';
 import EditForm from './components/edit-form';
 
-const middlewares = [];
+const middlewares = [multi];
 if (PRODUCTION === false) {
     middlewares.push(createLogger({
         collapsed: true
@@ -40,6 +44,7 @@ class App extends Component {
             <section>
                 <EditForm />
                 <AttendeeListContainer />
+                <SelectedListContainer />
             </section>
         );
     }

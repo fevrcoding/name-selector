@@ -1,12 +1,13 @@
-import expect, { spyOn } from 'expect';
+import expect, { createSpy } from 'expect';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 
 import {AttendeeList} from '../../assets/javascripts/components/attendee-list';
+import Attendee from '../../assets/javascripts/components/attendee';
 
 describe('Name Item Component Actions', () => {
 
-    let shallowRenderer, output;
+    let attendeeListInstance;
 
     const data = {
         attendees: [{
@@ -15,23 +16,35 @@ describe('Name Item Component Actions', () => {
         }, {
             id: 1,
             name: 'Jane'
-        }]
+        }],
+        onSelectAttendee: createSpy()
     };
 
     beforeEach(() => {
-        shallowRenderer = TestUtils.createRenderer();
-        shallowRenderer.render(<AttendeeList {...data} />);
-        output = shallowRenderer.getRenderOutput();
+        attendeeListInstance = TestUtils.renderIntoDocument(<AttendeeList {...data} />);
     });
 
-    it('should render an unordered list', () => {
-        expect(output.type).toBe('ul');
+    describe('.selectAttendee()', () => {
+
+        it('should call passed-in onSelectAttendee prop', () => {
+            attendeeListInstance.selectAttendee(1);
+            expect(data.onSelectAttendee).toHaveBeenCalledWith(1);
+        });
+
     });
 
-    it('should render <Attendee> components', () => {
-        output.props.children.forEach((prop, i) => {
-            expect(prop.props.details).toEqual(data.attendees[i]);
+    describe('.render()', () => {
+        it('should render an unordered list', () => {
+            const ul = TestUtils.findRenderedDOMComponentWithTag(attendeeListInstance, 'ul');
+            expect(ul.tagName).toBe('UL');
+        });
+
+        it('should render list items components', () => {
+
+            const list = TestUtils.scryRenderedDOMComponentsWithTag(attendeeListInstance, 'li');
+            expect(list.length).toBe(data.attendees.length);
         });
     });
+
 
 });

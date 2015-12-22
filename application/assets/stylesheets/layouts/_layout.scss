@@ -179,3 +179,10 @@
 }
 /* Shared Layout Styles
  * ========================================================================== */
+
+
+.c-roulette__mask {
+    position: relative;
+    overflow: hidden;
+    max-height: 50px;
+}

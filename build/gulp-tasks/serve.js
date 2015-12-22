@@ -73,9 +73,8 @@ module.exports = function (gulp, $, options) {
     // Watch Files For Changes & Reload
     gulp.task('serve', ['default'], function (done) {
 
-        var browserSync = require('browser-sync').create(options.buildHash);
-
-        var serverConf = _.defaults({
+        var browserSync = require('browser-sync').create(options.buildHash),
+            serverConf = _.defaults({
             ui: {
                 port: 3001,
                 weinre: {
@@ -123,9 +122,8 @@ module.exports = function (gulp, $, options) {
     //just a static server
     gulp.task('server', function (done) {
 
-        var browserSync = require('browser-sync').create(options.buildHash);
-
-        var serverConf = _.defaults({
+        var browserSync = require('browser-sync').create(options.buildHash),
+            serverConf = _.defaults({
             logLevel: 'silent',
             open: false,
             ui: false

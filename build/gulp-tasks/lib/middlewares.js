@@ -1,18 +1,23 @@
-module.exports = function  (options) {
-
+/**
+ * Use static JSON as a fake API.
+ *
+ * URL: /api/users --> application/fixtures/api/users.json
+ *
+ */
+function APIMiddleware(options) {
     var url = require('url'),
         path = require('path'),
         fs = require('fs'),
-        fixturePath = path.join(process.cwd(), options.paths.src.fixtures),
-        fixturePathRegEx = /\/api\/(.+)/;
+        fixturePath = path.join(process.cwd(), options.paths.src.fixtures, 'api'),
+        fixturePathRegEx = /^\/api\/(.+)/;
 
-    var fixtures = function (req, res, next) {
+    return function fixturesAPI(req, res, next) {
 
 
         var parserUrl = url.parse(req.url, false);
 
         var match = parserUrl.path.match(fixturePathRegEx),
-            filepath = match !== null ? path.join(fixturePath, 'api-' + match[1]) + '.json' : null;
+            filepath = match !== null ? path.join(fixturePath, match[1]) + '.json' : null;
 
         if (filepath) {
             fs.readFile(filepath, 'utf8', function (err, data) {
@@ -23,6 +28,15 @@ module.exports = function  (options) {
         next();
 
     };
+}
 
-    return [fixtures];
+
+module.exports = function  (options) {
+
+    var middlewares = [];
+
+    middlewares.push(APIMiddleware(options));
+
+    return middlewares;
+
 };

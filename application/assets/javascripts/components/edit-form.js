@@ -29,10 +29,7 @@ export class EditForm extends Component {
     static parseAttendees(value = '') {
         return value.split("\n")
             .map((line) => line.replace(/[\s]+/g, ' ').trim())
-            .filter((line) => !!line.length)
-            .map((name, id) => {
-                return {id, name};
-            });
+            .filter((line) => !!line.length);
     }
 
     handleSubmit(e) {
@@ -52,10 +49,10 @@ export class EditForm extends Component {
         let attendees = this.attendeesToString();
 
         return (
-            <form action="" onSubmit={this.handleSubmit.bind(this)}>
+            <form action="" onSubmit={(e) => this.handleSubmit(e)}>
                 <textarea cols="30" ref="attendeeInput" id="edit-form" name="edit-form" rows="10" defaultValue={attendees} />
                 <p>
-                    <button type="submit" ref="submitBtn">{'Save'}</button>
+                    <button type="submit">{'Save'}</button>
                     <button type="reset">{'Reset'}</button>
                 </p>
             </form>

@@ -1,12 +1,12 @@
 import expect from 'expect';
 
-import {ACTION_ATTENDEES_CHANGE, ACTION_SELECTED_ADD} from '../assets/javascripts/constants';
-import {attendeeListChangeAction, selectedAddAction} from '../assets/javascripts/actions';
+import {ACTION_ATTENDEES_CHANGE, ACTION_ATTENDEES_DESELECT, ACTION_ATTENDEES_SELECT} from '../assets/javascripts/constants';
+import {attendeeListChangeAction, attendeeListDeselectAction, attendeeListSelectAction} from '../assets/javascripts/actions';
 
 describe('Test Actions', () => {
 
 
-    describe('Action name action', () => {
+    describe('AttendeeList change action', () => {
 
         const attendeeList = ['John'];
         let action;
@@ -35,31 +35,61 @@ describe('Test Actions', () => {
 
     });
 
+    describe('AttendeeList select action', () => {
 
-    describe('Selected names action', () => {
-
-        const selected = 'Mary';
+        const selectId = 10;
         let action;
 
         beforeEach(() => {
-            action = selectedAddAction(selected);
+            action = attendeeListSelectAction(selectId);
         });
 
-        it('should return an object', () => {
+        it('should return an integer', () => {
             expect(action).toBeA(Object);
         });
 
         it('should match the change action action type', () => {
-            expect(action.type).toBe(ACTION_SELECTED_ADD);
+            expect(action.type).toBe(ACTION_ATTENDEES_SELECT);
         });
 
         it('should pass new names', () => {
-            expect(action.selected).toEqual(selected);
+            expect(action.id).toBe(selectId);
         });
 
-        it('should return an empty array by default', () => {
-            let defaultAction = selectedAddAction();
-            expect(defaultAction.selected).toBe('');
+
+        it('should return zero by default', () => {
+            let defaultAction = attendeeListSelectAction();
+            expect(defaultAction.id).toBe(undefined);
+        });
+
+    });
+
+
+    describe('AttendeeList de-select action', () => {
+
+        const selectId = 10;
+        let action;
+
+        beforeEach(() => {
+            action = attendeeListDeselectAction(selectId);
+        });
+
+        it('should return an integer', () => {
+            expect(action).toBeA(Object);
+        });
+
+        it('should match the change action action type', () => {
+            expect(action.type).toBe(ACTION_ATTENDEES_DESELECT);
+        });
+
+        it('should pass new names', () => {
+            expect(action.id).toBe(selectId);
+        });
+
+
+        it('should return zero by default', () => {
+            let defaultAction = attendeeListDeselectAction();
+            expect(defaultAction.id).toBe(undefined);
         });
 
     });

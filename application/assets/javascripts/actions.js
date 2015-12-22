@@ -6,7 +6,7 @@
  * @module actions
  */
 
-import {ACTION_ATTENDEES_CHANGE, ACTION_SELECTED_ADD} from './constants';
+import {ACTION_ATTENDEES_CHANGE, ACTION_ATTENDEES_SELECT, ACTION_ATTENDEES_DESELECT} from './constants';
 
 export function attendeeListChangeAction(attendeeList = []) {
     return {
@@ -15,9 +15,16 @@ export function attendeeListChangeAction(attendeeList = []) {
     };
 }
 
-export function selectedAddAction(selected = '') {
+export function attendeeListSelectAction(id) {
     return {
-        type: ACTION_SELECTED_ADD,
-        selected
+        type: ACTION_ATTENDEES_SELECT,
+        id
+    };
+}
+
+export function attendeeListDeselectAction(id) {
+    return {
+        type: ACTION_ATTENDEES_DESELECT,
+        id
     };
 }

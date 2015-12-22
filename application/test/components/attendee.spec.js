@@ -1,4 +1,4 @@
-import expect from 'expect';
+import expect, {createSpy} from 'expect';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 
@@ -6,7 +6,7 @@ import Attendee from '../../assets/javascripts/components/attendee';
 
 describe('Name Item Component Actions', () => {
 
-    let shallowRenderer, output;
+    let shallowRenderer, output, clickSpy;
 
     const data = {
         id: 0,
@@ -14,8 +14,9 @@ describe('Name Item Component Actions', () => {
     };
 
     beforeEach(() => {
+        clickSpy = createSpy();
         shallowRenderer = TestUtils.createRenderer();
-        shallowRenderer.render(<Attendee details={data} />);
+        shallowRenderer.render(<Attendee details={data} onSelectAttendee={clickSpy} />);
         output = shallowRenderer.getRenderOutput();
     });
 
@@ -23,8 +24,15 @@ describe('Name Item Component Actions', () => {
         expect(output.type).toBe('li');
     });
 
-    it('should have the name as its unique child', () => {
-        expect(output.props.children).toBe(data.name);
+    it('should contain a label with the name as text', () => {
+        const p = output.props.children.find((child) => child.type === 'p');
+        expect(p.props.children).toBe('John');
+    });
+
+    it('should use passed-in callback for btn click action with details.id as argument', () => {
+        const btn = output.props.children.find((child) => child.type === 'button');
+        btn.props.onClick();
+        expect(clickSpy).toHaveBeenCalledWith(data.id);
     });
 
 });

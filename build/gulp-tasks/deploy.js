@@ -80,8 +80,9 @@ module.exports = function (gulp, $, options) {
 
 
     gulp.task('remote', function (done) {
-        var Ssh = require('ssh2').Client,
-            _ = require('lodash'),
+
+        var _ = require('lodash'),
+            Ssh = require('ssh2').Client,
             conn = new Ssh(),
             sshCommands,
             host;
@@ -155,8 +156,8 @@ module.exports = function (gulp, $, options) {
 
     gulp.task('rsync', function (done) {
 
-        var rsync = require('rsyncwrapper').rsync,
-            _ = require('lodash'),
+        var _ = require('lodash'),
+            rsync = require('rsyncwrapper').rsync,
             conf,
             host;
 

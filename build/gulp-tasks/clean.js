@@ -5,7 +5,8 @@
 
 module.exports = function (gulp, $, options) {
 
-    var path = require('path');
+    var path = require('path'),
+        del = require('del');
 
     var paths = options.paths,
         assetsPath = options.assetsPath,
@@ -29,8 +30,6 @@ module.exports = function (gulp, $, options) {
 
 
     gulp.task('clean', function (done) {
-        var del = require('del');
-
         del(folders, {dot: true}).then(function () {
             done();
         }, function (err) {
@@ -39,8 +38,6 @@ module.exports = function (gulp, $, options) {
     });
 
     gulp.task('clean:tmp', function (done) {
-        var del = require('del');
-
         del([ paths.tmp, '.tmp'], {dot: true}).then(function () {
             done();
         }, function (err) {

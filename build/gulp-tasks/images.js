@@ -5,12 +5,12 @@
 
 module.exports = function (gulp, $, options) {
 
-    gulp.task('images', function () {
-
-        var path = require('path'),
+    var productionPipe = $.util.noop,
+        path = require('path'),
             paths = options.paths,
-            filesMatch = '**/*.{png,jpg,gif,svg,webp}',
-            productionPipe;
+        filesMatch = '**/*.{png,jpg,gif,svg,webp}';
+
+    gulp.task('images', function () {
 
         if (options.production) {
             productionPipe = require('lazypipe')()
@@ -23,8 +23,6 @@ module.exports = function (gulp, $, options) {
                     }]
                 })
                 .pipe($.rev);
-        } else {
-            productionPipe = $.util.noop;
         }
 
 

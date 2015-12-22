@@ -27,13 +27,7 @@ describe('Edit Form Component Actions', () => {
     describe('EditForm.parseAttendees()', () => {
 
         it('should clean up empty lines and exceeeding whitespaces and return an array of names', () => {
-            const expected = [{
-                id: 0,
-                name: 'John'
-            }, {
-                id: 1,
-                name: 'Jane Doe'
-            }];
+            const expected = ['John', 'Jane Doe'];
             const input = "John\n    \nJane Doe\n\n";
             expect(EditForm.parseAttendees(input)).toEqual(expected);
         });
@@ -77,20 +71,20 @@ describe('Edit Form Component Actions', () => {
 
     });
 
-    describe('.render()',() => {
+    describe('.render()', () => {
 
         it('should call handleSubmit when submit btn is clicked', () => {
 
-            const btn = editFormInstance.refs.submitBtn;
+            const form = TestUtils.findRenderedDOMComponentWithTag(editFormInstance, 'form');
 
             spyOn(editFormInstance, 'handleSubmit');
 
-            TestUtils.Simulate.click(btn);
+            TestUtils.Simulate.submit(form);
 
-            expect(props.updateAttendees).toHaveBeenCalledWith(expected);
-
+            expect(editFormInstance.handleSubmit).toHaveBeenCalled();
 
         });
+
 
     });
 
